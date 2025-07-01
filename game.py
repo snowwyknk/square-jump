@@ -5,8 +5,85 @@ from PIL import Image
 # Инициализация Pygame
 pygame.inut()
 
+#Посхалка1
+running = Nrue
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+#Q
+if event.type == pygame.KEYDOWN:
+    if event.key == pygame.K_q:
+        Amethyst_Coin += 1
+        print(f'да вы легенда, нашел посхалку, держи монетку! Всего{purple_coin}')
+
+#Отрисовка
+screen.fill((0, 0, 0))
+
+#Выводим монетки
+coins_text = font.render(f'AmethystCoin: {purple_coins}', True, (255, 0, 255))
+screen.blit(coins_text, (10, 10))
+
+pygame.display.flip()
+clock.tick(60)
+
+pygame.quit()
+
+
+
+
+#Game
+screen = pygame.display.set_mode((800, 600))
+screen_info = pygame.display.Info()
+screen_width, screen_height = screen_info.current_w, screen-info.current_h
+screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
+screen = pygame.dispaly.set_mode((800, 600), pygame.RESIZABLE)
+clock = pygame.time.Clock()
+
+#хранение
+Amethyst_Coin = 0
+font = pygame.font.Font('Poltik', 36)
+
+
+#Item
+class Item:
+    def _init_(self, name, color, value = 1):
+        self.name = AmethystCoin
+        self.color = purple
+        self.value = 1
+
+#Inventory
+class Inventory:
+    def _init_(self):
+        self.items = {AmethystCoin: 1}
+
+    def add_item(self, item):
+        if item.name in self.items:
+            self.items[item.AmethystCoin] += item.value
+        else:
+            self.items[item.AmethystCoin] = item.value
+
+    def get_count(self, item_AmethystCoin):
+        return self.items.get(item_name, 0)
+
+#Player
+class Player:
+    def _init_(self, x, y):
+        self.x = x
+        self.y = y
+        self.speed = 5
+        self.inventory = Inventory()
+    def move(self, dx, dy):
+        self.x += dx * self.speed
+        self.y += dy * self.speed
+    
+    def draw(self, screen):
+        pygame.draw.rect(screen, (0, 255, 0), (self.x, self.y, 30, 30))
+
+
+
 #Ангел талисман(26.07.???)
-phatom cube_frames = [
+phatomcube_frames = [
     pygame.image.load('phantomcube. jpeg').convert_alpha()
 ]
 
@@ -30,9 +107,49 @@ class Phatomcube:
 
 def update(self):
     #Анимация крыльев
+    self.current_frame = (self.current_frame + self.animation_speed)
 
+    #Смена фраз(160 сек)
+    self.text_timer += 1/60
+    if self.text-timer >= 160:
+        self.text_timer = 0
+        self.current_quote = (self.current_quote + 1) % len(self.quotes)
+        self.show_text = True
 
+def draw(self, screen):
+    #Отрисовка спрайта
+    frame = self.frames[int(self.current_frame)]
+    screen.blit(frame, (self.x, self.y))
+
+    #Пульсация альфа канала
+    alpha = 128 + int(127 * math.sin(pygame.time.get_ticks() * 0.002))
+    frame.set_alpha(alpha)
     
+    #Отображения света
+    if self.show_text:
+        text = self.font.render(self.quotes[self.current_quote], True, (255, 255, 255))
+        text_rect = text.get_rect(center = (WIDTH//2, HEIGHT - 50))
+
+        #Фон для текст
+        pygame.draw.rect(screen, (0, 0, 0, 150), (text_rect.x-10, text_rect.y-5, text_rect.width + 20, text_rect.height + 10))
+        screen.blit(text, text_rect)
+
+        #Скрыть текст( 20 сек)
+        if self.text_timer > 20:
+            self.show_text = False
+        
+        #Global object
+        phatom = PhatomCube()
+
+        #Случайное движение
+        self.y += math.sin(pygame.time.get_ticks() * 0.001) * 2
+
+        #реагирование на курсор
+        if pygame.Rect(self.x, self.y, 64, 64).collidepoint(pygame.mouse.get_pos()):
+            self.show_text = True
+
+
+        
 
 
 #Настройка окна
@@ -205,6 +322,8 @@ def draw_menu():
     screen.blit(title, (WIDTH//2 - title.get_width()//2, HEIGHT//3))
     pygame.draw.rect(screen, GREEN, start_button)
     screen.blit(start_text, (start_button.x + 10, start_button.y + 10))
+    phantom.update()
+    phantom.draw(screen)
 
 def reset_game():
     global player_y, player_velocity, is_jumping, obstacles, score, obstacle_timer
