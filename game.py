@@ -2,180 +2,131 @@ import pygame
 import random
 import sys
 from PIL import Image
-# Инициализация Pygame
-pygame.inut()
+import json
+import os
+import math
+from pygame import mixer
+from pygame. locals import *
 
-#Посхалка1
-running = Nrue
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-#Q
-if event.type == pygame.KEYDOWN:
-    if event.key == pygame.K_q:
-        Amethyst_Coin += 1
-        print(f'да вы легенда, нашел посхалку, держи монетку! Всего{purple_coin}')
+#Инцилизация Pygame
+pygame.init()
+mixer.init()
 
-#Отрисовка
-screen.fill((0, 0, 0))
-
-#Выводим монетки
-coins_text = font.render(f'AmethystCoin: {purple_coins}', True, (255, 0, 255))
-screen.blit(coins_text, (10, 10))
-
-pygame.display.flip()
-clock.tick(60)
-
-pygame.quit()
+#sound
+crash_sound = pygame.mixer.Sound("sounds/crash.wav")
 
 
+#Константы
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+COLORS = [
+    (255, 0, 0),    # RED
+    (0, 255, 0),    # GREEN
+    (0, 0, 255),    # BLUE
+    (255, 255, 0),  # YELLOW
+    (255, 0, 255)   # MAGENTA
+]
+PURPLE = (128, 0, 128)
+GOLD = (255, 215, 0)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
+#Состояние игры
+MENU = 0
+PLAYING = 1
+GAME_OVER = 2
 
-#Game
-screen = pygame.display.set_mode((800, 600))
-screen_info = pygame.display.Info()
-screen_width, screen_height = screen_info.current_w, screen-info.current_h
-screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
-screen = pygame.dispaly.set_mode((800, 600), pygame.RESIZABLE)
-clock = pygame.time.Clock()
-
-#хранение
-Amethyst_Coin = 0
-font = pygame.font.Font('Poltik', 36)
-
-
-#Item
-class Item:
-    def _init_(self, name, color, value = 1):
-        self.name = AmethystCoin
-        self.color = purple
-        self.value = 1
-
-#Inventory
-class Inventory:
-    def _init_(self):
-        self.items = {AmethystCoin: 1}
-
-    def add_item(self, item):
-        if item.name in self.items:
-            self.items[item.AmethystCoin] += item.value
-        else:
-            self.items[item.AmethystCoin] = item.value
-
-    def get_count(self, item_AmethystCoin):
-        return self.items.get(item_name, 0)
-
-#Player
+#Игрок
 class Player:
-    def _init_(self, x, y):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.size = 40
         self.speed = 5
-        self.inventory = Inventory()
-    def move(self, dx, dy):
-        self.x += dx * self.speed
-        self.y += dy * self.speed
+        self.velocity_y = 0
+        self.jump_force = -15
+        self.gravity = 0.8
+        self.is_jumping = False
+        self.shape = 'cube'
     
+    def jump(self):
+        if not self.is_jumping:
+            self.velocity_y = self.jump_force
+            self.is_jumping = True
+
+    def update(self):
+        #Автоматическое движение
+        self.x += self.speed
+
+        #Гравитация и прыжок
+        self.velocity_y += self.gravity
+        self.y += self.velocity_y
+
+        #Проверка земли
+        if self.y >= SCREEN_HEIGHT - self.size:
+            self.y = SCREEN_HEIGHT - self.size
+            self.velocity_y = 0
+            self.is_jumping = False
+
     def draw(self, screen):
-        pygame.draw.rect(screen, (0, 255, 0), (self.x, self.y, 30, 30))
+        if self.shape == 'cube':
+            pygame.draw.rect(screen, WHITE, (self.x, self.y, self.size, self.size))
+        elif self.shape == 'ball':
+            pygame.draw.circle(screen, WHITE, (self.x + self.size // 2, self.y + self.size // 2), self.size // 2)
+
+# Класс Препятствия
+class Obstacle:
+    def __init__(self, x, y, obstacle_type="spike"):
+        self.x = x
+        self.y = y
+        self.width = 40
+        self.height = 40
+        self.type = obstacle_type  # "spike", "platform", "portal_cube", "portal_ball" 
+        self.color = PURPLE if obstacle_type == "spike" else GOLD
+        
+        
+    def update(self, speed):
+        # Движение навстречу игроку
+        self.x -= speed
 
 
+    def draw(self, screen):
+        if self.type == "spike":
+            # шип
+            pygame.draw.polygon(screen, self.color, [
+                (self.x, self.y + self.height),
+                (self.x + self.width // 2, self.y),
+                (self.x + self.width, self.y + self.height)
+            ])
+        elif self.type == "platform":
+            pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
 
-#Ангел талисман(26.07.???)
-phatomcube_frames = [
-    pygame.image.load('phantomcube. jpeg').convert_alpha()
-]
+    def is_offscreen(self):
+        return self.x + self.width < 0
 
-phatom_quotes = [
-    'Добро пожаловать в Squre jump!',
-    'Я Phatom, твой путеводитель в игре.',
-    'Кто знает, кто разработчки... Может, под ними скрываются юнцы?'
-]
-class Phatomcube:
-    def _init_(self):
-        self.frames = phatom.frames
-        self.quotes = phatom.quotes
-        self.current_frame = 0
-        self.current_quote = 0
-        self.animation_speed = 0.1
-        self.x = WIDTH - 150
-        self.y = HEIGHT//2
-        self.show_text = False
-        self.text_timer = 0
-        self.font = pygame.font.SysFont('Arial', 24, italic = True)
 
-def update(self):
-    #Анимация крыльев
-    self.current_frame = (self.current_frame + self.animation_speed)
+    def check_collision(self, player):
+        if self.type == "spike":
+            # Проверка столкновения с шипом
+            collision = (player.x < self.x + self.width and
+                         player.x + player.size > self.x and
+                         player.y < self.y + self.height and
+                         player.y + player.size > self.y)
+            if collision and crash_sound:
+                crash_sound()
+            return collision
+        
+        elif self.type == "platform":
+            # Проверка стоит ли игрок на платформе
+            return (player.x < self.x + self.width and
+                    player.x + player.size > self.x and
+                    player.y + player.size >= self.y and
+                    player.y + player.size <= self.y + 10 )       
 
-    #Смена фраз(160 сек)
-    self.text_timer += 1/60
-    if self.text-timer >= 160:
-        self.text_timer = 0
-        self.current_quote = (self.current_quote + 1) % len(self.quotes)
-        self.show_text = True
-
-def draw(self, screen):
-    #Отрисовка спрайта
-    frame = self.frames[int(self.current_frame)]
-    screen.blit(frame, (self.x, self.y))
-
-    #Пульсация альфа канала
-    alpha = 128 + int(127 * math.sin(pygame.time.get_ticks() * 0.002))
-    frame.set_alpha(alpha)
     
-    #Отображения света
-    if self.show_text:
-        text = self.font.render(self.quotes[self.current_quote], True, (255, 255, 255))
-        text_rect = text.get_rect(center = (WIDTH//2, HEIGHT - 50))
-
-        #Фон для текст
-        pygame.draw.rect(screen, (0, 0, 0, 150), (text_rect.x-10, text_rect.y-5, text_rect.width + 20, text_rect.height + 10))
-        screen.blit(text, text_rect)
-
-        #Скрыть текст( 20 сек)
-        if self.text_timer > 20:
-            self.show_text = False
-        
-        #Global object
-        phatom = PhatomCube()
-
-        #Случайное движение
-        self.y += math.sin(pygame.time.get_ticks() * 0.001) * 2
-
-        #реагирование на курсор
-        if pygame.Rect(self.x, self.y, 64, 64).collidepoint(pygame.mouse.get_pos()):
-            self.show_text = True
-
-
-        
-
-
-#Настройка окна
-WIDTH, HEIGHT = 800, 600
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('square jump')
-obstacle_gap = 200
-obstacles = []
-BASE_SPEED = 5
-obstacle_speed = BASE_SPEED
-frame_count = 0
-obstacle_width = 30
-
-# спрайт куб
-player_frames = [
-    pygame.image.load('player_frame1.png').convert_alpha(),
-    pygame.image.load('player_frame2.png').convert_alpha(),
-    pygame.image.load('player_frame3.png').convert_alpha()
-]
-
-
-
-
-#класс анимаций
+#Класс Анимаций
 class Animation:
-    def _init_(self, frames, speed=0.1, loop=True):
+    def __init__(self, frames, speed = 0.1, loop = True):
         self.frames = frames
         self.speed = speed
         self.loop = loop
@@ -190,311 +141,124 @@ class Animation:
         self.current_frame += self.speed
         if self.loop:
             self.current_frame %= len(self.frames)
-        elif int(self. current_frame) >= len(self.frames) - 1:
+        elif int(self.current_frame) >= len(self.frames) - 1:
             self.done = True
             self.current_frame = len(self.frames) - 1
 
     def get_current_frame(self):
         return self.frames[int(self.current_frame)]
 
-player_animatons = {
-    'idle': Animaton(player_frame[0:1]),
-    'jump': Animation(plater_frame[1:3], 0.2),
-    'death': Animation(player_frame[3:6], 0.3, loop=False)
-}
-current_animation = player_animation['idle']
-def load_spritesheet(filename, frame_width, frame_height, cols):
-    sheet = pygame.image.load(filename).convert_alpha()
-    frames = []
-    for i in range(cols):
-        frame = sheet.subsurface(pygame.Rect(i * frame_width, frame_height))
-        frames.append(frame)
-    return frames
-
-#Смена анимации
-if is_jumping:
-    current_animmation = player_animations['jump']
-elif is_dead:
-    current_animation = player_animations['death']
-else:
-    current_animation = player_animations['idle']
-
-# Обновление кадра
-current_animation.update()
-
-#Отрисовка
-screen.blit(current_animations.get_current_frame(), (player_x, player_y))
-
-#Анимация взрыва
-explosion_frames = [pygame.image.load(f'explosion_{i}.png') for i in range(4)]
-explosion = Animation(explosion_frames, 0.5, loop=False)
-
-#Момент смерти
-explosion.playing = True
-explosion.current_frame = 0
-
-#игровой цикл
-if explosion.playing:
-    screen.blit(explosion.get_current_frame(), (explosion_x, explosion_y))
-    explosion.update()
-
-
-
-
-
-#Цвета
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-BLUE = (0, 0, 255)
-GREEN = (0, 255, 0)
-COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 0, 255)]
-
-#Состояние игры
-MENU = 0
-PLAYING = 1
-game_start = MENU
-
-#Шрифты
-font_large = pygame. font.SysFont(' Masquerade Toy Store Stuff', 50)
-font_small = pygame. font.SysFont(' Masquerade Toy Store Stuff', 30)
-
-#Параметры игрока
-player_size = 40
-player_x = 100
-player_y = HEIGHT//2
-player_color = WHITE
-gravity = 1
-jump_force = -20
-player_velocity = 0
-is_jumping = False
-
-
-#Параметры препятствий
-obstracles = []
-obstracle_width = 30
-obsracle_gap = 300
-obstracle_speed = 5
-score = 0
-font = pygame.font.SysFont(None, 36)
-
-#Кнопки меню
-start_button = pygame.Rect(WIDTH//2 - 100, HEIGHT//2, 200, 50)
-
-def create_obstacle():
-    height = random.randint(50, HEIGHT - 200)
-    color = random.choice(COLORS)
-    obstacles.append({
-        'x': WIDTH,
-        'height': height,
-        'color': color,
-        'passed': False
-    })
-
-def draw_player():
-    pygame.draw.rect(screen, player_color, (player_x, player_y, player_size))
-def draw_obstacles():
-    for obstacle in obstacles:
-        pygame.draw.rect(screen, obstacle['color'], (obstacle['x'], 0, obstacle_width, obstacle['height']))
-        bottom_y = obstacle['height'] + obstacle_gap
-        pygame.draw.rect(screen, obstacle['color'], (obstacle['x'], bottom_y, obstracle_width, HEIGHT - bottom_y))
-def check_collision():
-    player_rect = pygame.Rect(player_x, player_y, player_size)
-    for obstacle in obstacles:
-        top_rect = pygame.Rect(obstacle['x'], 0, obstracle_width, obstacle['height'])
-        bottom_rect = pygame.Rect(obstacle['x'], obstacle['height'] + obstacle_gap, obstacle_width, HEIGHT - (obstacle['height'] + obstacle_gap))
-    if player_rect.colliderect(top_rect) or player_rect.colliderect(bottom_rect):
-        return True
-    return False
-
-def update_score():
-    global score
-    for obstacle in obstacles:
-        if obstacle['x'] + obstacle_width < player_x and not obstacle['passed']:
-            obstacle['passed'] = True
-            score += 1
-
-def draw_menu():
-    screen.fill(BLACK)
-    title = font_large.render('SQUARE JUMP', True, WHITE)
-    start_text = font_small.render('START (SPACE/MOUSE)', True, BLACK)
-
-    screen.blit(title, (WIDTH//2 - title.get_width()//2, HEIGHT//3))
-    pygame.draw.rect(screen, GREEN, start_button)
-    screen.blit(start_text, (start_button.x + 10, start_button.y + 10))
-    phantom.update()
-    phantom.draw(screen)
-
-def reset_game():
-    global player_y, player_velocity, is_jumping, obstacles, score, obstacle_timer
-    player_y = HEIGHT // 2
-    player_velocity = 0
-    is_jumping = False
-    obstacles = []
-    score = 0
-    obstacle_timer = 0
-
-    #Основной игровой цикл
-    clock = pygame. time.Clock()
-    running = True
-
-    while running:
-        #Обработка событий
+#Класс Игры
+class Game:
+    def __init__(self):
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        pygame.display.set_caption("Square Jump v1.0")
+        self.clock = pygame.time.Clock()
+        self.running = True
+        self.state = MENU
+        self.player = Player(100, SCREEN_HEIGHT - 100)
+        self.obstacles = []
+        self.score = 0
+        self.font = pygame.font.SysFont(None, 36)
+        self.obstacle_timer = 0
+        self.obstacle_frequency = 1000  # Частота появления препятствий
+        self.game_speed = 5
+        
+    def handle_events(self):
         for event in pygame.event.get():
-            if  event.type == pygame.QUIT:
-                running = False
-
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                mouse_pos = pygame.mouse.get_pos()
-                if game_state == MENU and start_button.collidepoint(mouse_pos):
-                    game_state = PLAYING
-                    reset_game()
-
+            if event.type == pygame.QUIT:
+                self.running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    if game_state == MENU:
-                        game_state = PLAYING
-                        reset_game()
-                    elif game_state == PLAYING and not is_jumping:
-                        player_velocity = jump_force
-                        is_jumping = True
-
-
-
-
-
-#часы для управления FPS
-clock = pygame.time.Clock()
-FPS = 60
-class Game:
-    def _init_(self):
+                    if self.state == MENU:
+                        self.state = PLAYING
+                    self.player.jump()
+                if event.key == pygame.K_RETURN and self.state == GAME_OVER:
+                    self.reset_game()
+                    
+    def reset_game(self):
+        self.player = Player(100, SCREEN_HEIGHT - 100)
         self.obstacles = []
-
-def create_obstacle(self):
-    height = random.randint(50, HEIGHT - 200)
-    color = random.choice(COLORS)
-    self.obstacles.append({
-        'x': WIDTH,
-        'height': height,
-        'color': color,
-        'passed': False
-    })
-    
-def draw_player():
-    pygame.draw.rect(screen, player_color, (player_x, player_y, player_size, player_size))
-    global anim_frame, current_anim
-
-    if is_jumping:
-        current_anim = 'jump'
-    else:
-        current_anim = 'default'
-
-    #кадр анимации
-    anim_progress = anim_frame % len(player_animation_frames[current_anim])
-    current_rect = player_animation_frames[current_anim][int(anim_progress)]
-
-    #Русием игрока
-    pygame.draw.rect(screen, player_color, (player_x, player_x, player_y, current_rect.width, current_rect.height))
-
-    #обновыление счетчка кадров анимации
-    anim_frame += anim_speed
-    anim_speed = 0.15
-    
-    
-
-def draw_obstacles():
-    global obstacle_width
-    for obstacle in obstacles:
-        #Верхнее препятствие
-        pygame.draw.rect(screen, obstacle['color'],(obstacle['x'], 0, obstacle_width, obstacle['height']))
-        #Нижнее препятствие
-        bottom_y = obstacle['height']  +  obstacle_gap
-        pygame.draw.rect(screen, obstacle['color'],(obstacle['x'], bottom_y, obstacle_width, HEIGHT - bottom_y))
-
-def check_collision():
-    player_rect = pygame.Rect(player_x, player_y, player_size)
-
-    for obstacle in obstacles:
-        #Верхнее препятствие
-        top_rect = pygame.Rect(obstacle['x'], 0, obstacle_width, obstacle['height'])
-        #Нижнее препятствие
-        bottom_rect = pygame.Rect(obstacle['x'], obstacle['height'] + obstacle_gap, obstacle_width, HEIGHT - (obstacle['height'] + obstacle_gap))
-
-        if player_rect.colliderect(top_rect) or player_rect.colliderect(bottom_rect):
-            return True
-    if player_y <= 0 or player_y + player_size >= HEIGHT:
-        return True
-    return False
-def update_score():
-    global score
-    for obstacle in obstacles:
-        if obstacle['x'] + obstacle_width < player_x and not obstacle['passed']:
-            obstacle['passed'] = True
-            score += 1
-#Oсновной игровой цикл
-running = True
-obstacle_timer = 0
-
-while running:
-    #Обработка событий
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and not is_jumping:
-                player_velocity = jump_force
-                is_jumping = True
+        self.score = 0
+        self.game_speed = 5
+        self.state = PLAYING
+                
+                    
+                    
+    def spawn_obstacles(self):
+        # генерации уровня
+        if random.random() < 0.02 and self.state == PLAYING and len(self.obstacles) < 5: 
+            obstacle_type = random.choice(["spike", "platform"])
+            y = SCREEN_HEIGHT - 100 if obstacle_type == 'platform' else SCREEN_HEIGHT - 40
+            self.obstacles.append(Obstacle(SCREEN_WIDTH, y, obstacle_type))
+             
+    def check_collisions(self):
+        for obstacle in self.obstacles:
+            if obstacle.check_collision(self.player):
+                if obstacle.type == "spike":
+                    self.state = GAME_OVER
 
 
-#Гравитция
-player_velocity += gravity
-player_y += player_velocity
+    def update(self):
+        if self.state == PLAYING:
+            self.player.update()
+            
+            #проверка выхода за экран
+            if self.player.x > SCREEN_WIDTH:
+                self.player.x = -self.player.size
 
-#Проверка Земли
-if player_y + player_size >= HEIGHT:
-    player_y = HEIGHT - player_size
-    player_velocity = 0
-    is_jumping = False
+            #Препятствия
+            self.spawn_obstacles()
+            self.game_speed += 0.001
+            for obstacle in self.obstacles[:]:
+                obstacle.update(self.game_speed)
+                if obstacle.is_offscreen():
+                    self.obstacles.remove(obstacle)
+            self.check_collisions()
+            self.score += 1
+            
 
-# Генерация препятствий
-obstacle_timer += 1
-if obstacle_timer >= 90:
-    create_obstacle()
-    obstacle_timer = 0
+    def draw(self):
+        offset_x = self.player.x - 100
+        self.screen.fill(BLACK)
+        if self.state == MENU:
+            #Рисовка меню
+            font = pygame.font.SysFont(None, 48)
+            title = self.font.render("Press SPACE to Start", True, WHITE)
+            self.screen.blit(title, (SCREEN_WIDTH // 2 - title.get_width() // 2, SCREEN_HEIGHT // 2))
+        else:
+            #Отрисовка игрока со смещением
+            self.player.draw(self.screen)
+            for obstacle in self.obstacles:
+                #смещение к препятствиям
+                if obstacle.type == "spike":
+                    pygame.draw.polygon(self.screen, obstacle.color, [
+                    (obstacle.x - offset_x, obstacle.y + obstacle.height),
+                    (obstacle.x - offset_x + obstacle.width // 2, obstacle.y),
+                    (obstacle.x - offset_x + obstacle.width, obstacle.y + obstacle.height)
+                ])
+                elif obstacle.type == "platform":
+                    pygame.draw.rect(self.screen, obstacle.color, 
+                        (obstacle.x - offset_x, obstacle.y, obstacle.width, obstacle.height))
+                #Отрисовка счета
+            score_text = self.font.render(f"Score: {self.score}", True, WHITE)
+            self.screen.blit(score_text, (20, 20))
+            if self.state == GAME_OVER:
+                game_over_text = self.font.render("Dont give up! Press ENTER to Restart", True, WHITE)
+                self.screen.blit(game_over_text, (SCREEN_WIDTH // 2 - game_over_text.get_width() // 2, SCREEN_HEIGHT // 2))
+        pygame.display.flip()
+        
+        
+    def run(self):
+        while self.running:
+            self.handle_events()
+            self.update()
+            self.draw()
+            self.clock.tick(60)
 
-#Движения препятствий
-for obstacle in obstacles[:]:
-    obstacle['x'] -= obstacle_speed
-    if obstacle['x'] + obstacle_width < 0:
-        obstacles.remove(obstacle)
-        while running:
-            frame_count += 1
-    if frame_count % 1000 == 0:
-        obstacle_speed += 1
-
-#обновление счета
-update_score()
-
-#ПРОВЕРКА СТЛОКНОВЕНИЙ
-if check_collision():
-    running = False
-
-#отрисовка
-screen.fill(BLACK)
-draw_player()
-draw_obstacles()
-
-#Отображения счета
-score_text = font.render(f"Score: {score}", True, WHITE)
-screen.blit(score_text, (10,10))
-
-pygame.display.flip()
-clock.tick(FPS)
-
-#Завершение игры
-pygame.guit()
-sys.exit()
-
+if __name__ == "__main__":
+    game = Game()
+    game.run()
 
 
 
@@ -502,6 +266,7 @@ sys.exit()
     
 
         
+
 
 
 
