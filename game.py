@@ -7,14 +7,34 @@ import os
 import math
 from pygame import mixer
 from pygame. locals import *
+import sqlite3
+from hashlib import sha256
+import logging
+
+# Правильная инициализация логгинг
+logging.basicConfig(filename='game.log', level=logging.INFO)
+
 
 #Инцилизация Pygame
 pygame.init()
 mixer.init()
+pygame.display.set_mode((1, 1))
 
 
 #sound
-crash_sound = pygame.mixer.Sound("sounds/crash.wav")
+try:
+    crash_sound = pygame.mixer.Sound("sounds/crash.wav")
+except:
+    logging.error("Не удалось загрузить звук crash.wav")
+    crash_sound = None
+
+# Пример использования логгинга (должен быть после определения username)
+    def login(username):
+        logging.info(f"Игрок {username} вошел в систему")
+
+
+
+
 
 
 # Конвертация webp в png (если нужно) валюта
@@ -38,7 +58,7 @@ except Exception as e:
     
 
 
-#Константы
+#Константы config
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 COLORS = [
@@ -190,6 +210,8 @@ class Animation:
 class Game:
     def __init__(self):
         self.state = MENU
+        self.account_system = AccountSystem()
+        self.promo_system = PromoSystem(self.account_system)
         if not os.path.exists("menu/background.png"):
             print("Ошибка: файл background.png не найден!")
             self.menu_bg = None
@@ -205,8 +227,6 @@ class Game:
             {"name": "Shield", "cost": 15, "owend": False},
             {"name": "Time Walk", "cost": 25, "owend": False},
         ]
-        self.account_system = AccountSystem()
-        self.promo_system = PromoSystem()
         self.amethysts = []
         self.total_amethysts = 0
         self.collect_sound = pygame.mixer.Sound("sounds/collect.wav")
@@ -516,29 +536,6 @@ class Game:
             print("Shop state activated!")  # Проверка перехода в магазин
              
                         
-                        
-                        
-        
-    def handle_events(self, event):
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.running = False
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_F11:
-                    self.fullscreen = not self.fullscreen
-                    if self.fullscreen:
-                        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.FULLSCREEN)
-                    else:
-                        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-                
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    if self.state == MENU:
-                        self.state = PLAYING
-                    self.player.jump()
-                if event.key == pygame.K_RETURN and self.state == GAME_OVER:
-                    self.reset_game()
                     
     def reset_game(self):
         # Очищаем предыдущее состояние
@@ -762,49 +759,106 @@ class Amethyst:
 # класс аккаунтов
 class AccountSystem:
     def __init__(self):
-        self.accounts_file = "accounts.json"
+        self.db_path = "game_accounts.db"
+        self.conn = sqlite3.connect(self.db_path)
+        self.create_tables()
         self.current_account = None
-        self.accounts = self.load_accounts()
+       
+    def __init__db(self):
+        if not os.path.exists(self.db_path):
+            open(self.db_path, 'w').close()  # Создаём пустой файл
         
-    def load_accounts(self):
-        if os.path.exists(self.accounts_file):
-            try:
-                with open(self.accounts_file) as f:
-                    return json.load(f)
-            except (json.JSONDecodeError, KeyError):
-                return {}
-            
+        self.conn = sqlite3.connect('game_accounts.db')
+        self.create_tables()
+        self.current_account = None
         
-    
-    def save_accounts(self):
-        with open(self.accounts_file, "w") as f:
-            json.dump(self.accounts, f, indent=4)
-            
+    def create_tables(self):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS players (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                amethysts INTEGER DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS promo_used (
+                player_id INTEGER,
+                promo_code TEXT,
+                FOREIGN KEY(player_id) REFERENCES players(id)
+            )
+        ''')
+        self.conn.commit()
+        
+    @staticmethod
+    def hash_password(password, salt="your_salt_here"):
+        return sha256((password + salt).encode()).hexdigest()
+        
+        
     def create_account(self, username, password):
-        if username in self.accounts:
-            return False  # Аккаунт уже существует
-        self.accounts[username] = {
-            "password": password,
-            "amethysts": 0,
-            "unlocked_skins": ["default"],
-            "promo_used": []
-        }
-        self.save_accounts()
-        return True
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute('''
+                INSERT INTO players (username, password)
+                VALUES (?, ?)
+            ''', (username, self.hash_password(password)))
+            self.conn.commit()
+            return True
+        except sqlite3.IntegrityError:
+            return False
+            
     
     def login(self, username, password):
-        if username in self.accounts and self.accounts[username]["password"] == password:
-            self.current_account = username
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            SELECT id FROM players
+            WHERE username = ? AND password = ?
+        ''', (username, self.hash_password(password)))
+        
+        result = cursor.fetchone()
+        if result:
+            self.current_account = {
+                "id": result[0],
+            "username": username,
+            "amethysts": result[1]
+            }
             return True
         return False
+    
+    def get_current_account_data(self):
+        return self.current_account
+    
+    def save_accounts(self):
+        if self.current_account:
+            cursor = self.conn.cursor()
+            cursor.execute('''
+                UPDATE players SET amethysts = ?
+                WHERE username = ?
+            ''', (self.current_account["amethysts"], 
+                 self.current_account["username"]))
+            self.conn.commit()
+            
     
     def logout(self):
         self.current_account = None
         
-    def get_current_account_data(self):
-        if self.current_account:
-            return self.accounts[self.current_account]
-        return None
+    def  save_level(self):
+        try:
+            with open(self.save_file, "w") as f:
+                json.dump(self.obstacles, f, indent=4)
+            print(f"Уровень сохранен в {self.save_file}")
+        except Exception as e:
+            print(f"Ошибка сохранения уровня: {e}")
+        
+                 
+        
+    
+    
+   
+    
+        
     
         
                       
@@ -816,41 +870,54 @@ class PromoSystem:
         "WELCOME10": {"amethysts": 10, "description": "Бонус за регистрацию"},
         "JUMP25": {"amethysts": 25, "description": "Подарок для игроков"},
         "SUMMERJUMP": {"amethysts": 38, "description": "Летний промокод"},
+        
     }
     
-    @classmethod
-    def redeem_promo(cls, account_system, code):
+        
+    def __init__(self, account_system):
+        self.account_system = account_system
+    
+    
+    def redeem_promo(self, code):
         if not account_system.current_account:
             return "Войдите в аккаунт"
         
+        code = code.uper()
+        if code not in self.PROMO_CODES:
+            return "Неверный промокод"
+        
         account_data = account_system.get_current_account_data()
         
-        if code in account_data["promo_used"]:
+        cursor = self.account_system.conn.cursor()
+        cursor.execute('''
+            SELECT 1 FROM promo_used 
+            WHERE player_id = (SELECT id FROM players WHERE username = ?) 
+            AND promo_code = ?
+        ''', (self.account_system.current_account["username"], code))
+        
+        if cursor.fetchone():
             return "Промокод уже использован"
         
-        if code in cls.PROMO_CODES:
-            reward = cls.PROMO_CODES[code]
-            account_data["amethysts"] += reward["amethysts"]
-            account_data["promo_used"].append(code)
-            account_system.save_accounts()
+        if code in self.PROMO_CODES:
+            reward = self.PROMO_CODES[code]
+            # Обновляем аметисты
+            cursor.execute('''
+                UPDATE players SET amethysts = amethysts + ?
+                WHERE username = ?
+            ''', (reward["amethysts"], self.account_system.current_account["username"]))
+            
+            # Добавляем в использованные
+            cursor.execute('''
+                INSERT INTO promo_used (player_id, promo_code)
+                VALUES ((SELECT id FROM players WHERE username = ?), ?)
+            ''', (self.account_system.current_account["username"], code))
+            
+            self.account_system.conn.commit()
+            self.account_system.current_account["amethysts"] += reward["amethysts"]
             return f"Получено {reward['amethysts']} аметистов!"
         
         return "Неверный промокод"
-    
-    def show_promo_screen(self):
-        if not self.account_system.current_account:
-            print("Войдите в аккаунт для использования промокодов")
-            return
         
-        promo_code = input("Введите промокод: ").upper()
-        result = self.promo_system.redeem_promo(self.account_system, promo_code)
-        print(result)
-        
-        # Обновляем количество аметистов
-        self.total_amethysts = self.account_system.get_current_account_data()["amethysts"]
-    
-         
-            
         
     
 if __name__ == "__main__":
@@ -859,10 +926,10 @@ if __name__ == "__main__":
 
 
 
-
     
 
         
+
 
 
 
