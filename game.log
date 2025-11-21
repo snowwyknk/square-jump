@@ -1,0 +1,193 @@
+
+2025-11-20 21:46:25,731 - WARNING - Crash sound not found
+2025-11-20 21:46:25,731 - WARNING - Collect sound not found
+2025-11-20 21:46:39,030 - WARNING - Crash sound not found
+2025-11-20 21:46:39,031 - WARNING - Collect sound not found
+2025-11-20 21:48:28,244 - WARNING - Crash sound not found
+2025-11-20 21:48:28,244 - WARNING - Collect sound not found
+2025-11-20 21:51:04,521 - WARNING - Crash sound not found
+2025-11-20 21:51:04,521 - WARNING - Collect sound not found
+2025-11-21 14:12:12,709 - ERROR - Error loading resources: 'cube01.png'
+2025-11-21 14:12:53,073 - ERROR - Error loading resources: 'cube01.png'
+2025-11-21 14:22:47,462 - ERROR - Error loading resources: 'game project/skins/cube01.png'
+2025-11-21 15:02:07,821 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:15,048 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:15,900 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:16,217 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:16,381 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:16,563 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:16,693 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:16,841 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:40,770 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:40,806 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:41,918 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:02:43,103 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:22,109 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:23,051 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:23,349 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:23,530 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:23,679 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:23,793 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:52,381 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:52,390 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:54,897 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:55,849 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:56,075 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:56,270 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:56,501 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:56,711 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:56,895 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:57,076 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:57,274 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:57,453 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:57,600 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:57,779 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:57,990 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:58,201 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:58,398 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:58,594 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:58,773 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:58,936 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:03:59,102 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:23:15,717 - INFO - Database tables created/verified
+2025-11-21 15:23:15,718 - INFO - Database initialized successfully
+2025-11-21 15:23:37,363 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:23:37,367 - WARNING - Account already exists: don minon
+2025-11-21 15:24:21,509 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:21,519 - INFO - Account created successfully: saika
+2025-11-21 15:24:21,519 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:25,914 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:25,914 - WARNING - Account already exists: saika
+2025-11-21 15:24:27,740 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:27,740 - WARNING - Account already exists: saika
+2025-11-21 15:24:28,405 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:28,405 - WARNING - Account already exists: saika
+2025-11-21 15:24:28,681 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:28,681 - WARNING - Account already exists: saika
+2025-11-21 15:24:28,876 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:28,876 - WARNING - Account already exists: saika
+2025-11-21 15:24:29,070 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:29,070 - WARNING - Account already exists: saika
+2025-11-21 15:24:29,282 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:29,282 - WARNING - Account already exists: saika
+2025-11-21 15:24:29,493 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:29,493 - WARNING - Account already exists: saika
+2025-11-21 15:24:29,670 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:29,670 - WARNING - Account already exists: saika
+2025-11-21 15:24:29,882 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:29,882 - WARNING - Account already exists: saika
+2025-11-21 15:24:30,418 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:30,418 - WARNING - Account already exists: saika
+2025-11-21 15:24:30,613 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:30,613 - WARNING - Account already exists: saika
+2025-11-21 15:24:30,822 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:30,822 - WARNING - Account already exists: saika
+2025-11-21 15:24:31,053 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:31,053 - WARNING - Account already exists: saika
+2025-11-21 15:24:34,421 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:34,421 - WARNING - Account already exists: saika
+2025-11-21 15:24:34,682 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:34,682 - WARNING - Account already exists: saika
+2025-11-21 15:24:34,894 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:34,894 - WARNING - Account already exists: saika
+2025-11-21 15:24:35,138 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:35,138 - WARNING - Account already exists: saika
+2025-11-21 15:24:35,613 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:35,613 - WARNING - Account already exists: saika
+2025-11-21 15:24:35,810 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:35,810 - WARNING - Account already exists: saika
+2025-11-21 15:24:35,990 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:35,990 - WARNING - Account already exists: saika
+2025-11-21 15:24:41,720 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:41,720 - WARNING - Account already exists: saika
+2025-11-21 15:24:41,898 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:41,898 - WARNING - Account already exists: saika
+2025-11-21 15:24:42,047 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:42,047 - WARNING - Account already exists: saika
+2025-11-21 15:24:42,179 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:42,179 - WARNING - Account already exists: saika
+2025-11-21 15:24:45,405 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:45,405 - WARNING - Account already exists: saika
+2025-11-21 15:24:45,584 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:45,584 - WARNING - Account already exists: saika
+2025-11-21 15:24:45,730 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:45,730 - WARNING - Account already exists: saika
+2025-11-21 15:24:46,958 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:46,958 - WARNING - Account already exists: saika
+2025-11-21 15:24:47,156 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:47,156 - WARNING - Account already exists: saika
+2025-11-21 15:24:47,322 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:47,322 - WARNING - Account already exists: saika
+2025-11-21 15:24:47,500 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:47,500 - WARNING - Account already exists: saika
+2025-11-21 15:24:47,662 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:47,662 - WARNING - Account already exists: saika
+2025-11-21 15:24:47,841 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:47,841 - WARNING - Account already exists: saika
+2025-11-21 15:24:48,038 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:48,038 - WARNING - Account already exists: saika
+2025-11-21 15:24:48,234 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:48,234 - WARNING - Account already exists: saika
+2025-11-21 15:24:48,442 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:48,442 - WARNING - Account already exists: saika
+2025-11-21 15:24:48,657 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:48,657 - WARNING - Account already exists: saika
+2025-11-21 15:24:48,836 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:48,836 - WARNING - Account already exists: saika
+2025-11-21 15:24:49,000 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:49,000 - WARNING - Account already exists: saika
+2025-11-21 15:24:49,227 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:49,227 - WARNING - Account already exists: saika
+2025-11-21 15:24:49,491 - ERROR - Database error in login: no such column: last_chest_date
+2025-11-21 15:24:49,491 - WARNING - Account already exists: saika
+2025-11-21 15:26:27,676 - INFO - Database connection closed
+2025-11-21 15:38:03,035 - INFO - Database tables created/verified
+2025-11-21 15:38:03,039 - INFO - Adding missing column: last_chest_date
+2025-11-21 15:38:03,048 - INFO - Database schema updated successfully
+2025-11-21 15:38:03,048 - INFO - Database initialized successfully
+2025-11-21 15:39:02,250 - INFO - Login successful: don minon
+2025-11-21 15:39:02,250 - INFO - User don minon logged in successfully
+2025-11-21 15:39:03,238 - INFO - Login successful: don minon
+2025-11-21 15:39:03,238 - INFO - User don minon logged in successfully
+2025-11-21 15:39:04,807 - INFO - Login successful: don minon
+2025-11-21 15:39:04,808 - INFO - User don minon logged in successfully
+2025-11-21 15:39:54,937 - INFO - Database tables created/verified
+2025-11-21 15:39:54,938 - INFO - Database initialized successfully
+2025-11-21 15:43:40,523 - INFO - Login successful: don minon
+2025-11-21 15:43:40,523 - INFO - User don minon logged in successfully
+2025-11-21 15:43:41,540 - INFO - Login successful: don minon
+2025-11-21 15:43:41,541 - INFO - User don minon logged in successfully
+2025-11-21 15:44:44,443 - INFO - Database connection closed
+2025-11-21 16:00:35,123 - INFO - Database tables created/verified
+2025-11-21 16:00:35,124 - INFO - Database initialized successfully
+2025-11-21 16:00:54,689 - INFO - Session saved for user: don minon
+2025-11-21 16:00:54,689 - INFO - Login successful: don minon
+2025-11-21 16:00:54,691 - INFO - Player data loaded for: don minon
+2025-11-21 16:00:54,691 - INFO - User don minon logged in successfully
+2025-11-21 16:02:21,384 - INFO - Database connection closed
+2025-11-21 16:03:27,778 - INFO - Database tables created/verified
+2025-11-21 16:03:27,779 - INFO - Found last session for user: don minon
+2025-11-21 16:03:27,779 - INFO - Database initialized successfully
+2025-11-21 16:03:54,411 - INFO - Session saved for user: don minon
+2025-11-21 16:03:54,411 - INFO - Login successful: don minon
+2025-11-21 16:03:54,411 - INFO - Player data loaded for: don minon
+2025-11-21 16:03:54,412 - INFO - User don minon logged in successfully
+2025-11-21 16:04:13,374 - INFO - Database connection closed
+2025-11-21 16:04:21,455 - INFO - Database tables created/verified
+2025-11-21 16:04:21,455 - INFO - Found last session for user: don minon
+2025-11-21 16:04:21,456 - INFO - Database initialized successfully
+2025-11-21 16:04:47,759 - INFO - Database tables created/verified
+2025-11-21 16:04:47,760 - INFO - Found last session for user: don minon
+2025-11-21 16:04:47,760 - INFO - Database initialized successfully
+2025-11-21 16:05:11,157 - INFO - Database connection closed
+2025-11-21 19:49:34,534 - INFO - Database tables created/verified
+2025-11-21 19:49:34,536 - INFO - Found last session for user: don minon
+2025-11-21 19:49:34,537 - INFO - Database initialized successfully
+2025-11-21 19:49:39,947 - INFO - Database connection closed
+2025-11-21 19:50:22,769 - INFO - Database tables created/verified
+2025-11-21 19:50:22,769 - INFO - Found last session for user: don minon
+2025-11-21 19:50:22,769 - INFO - Database initialized successfully
+2025-11-21 19:50:39,027 - INFO - Session saved for user: don minon
+2025-11-21 19:50:39,027 - INFO - Login successful: don minon
+2025-11-21 19:50:39,027 - INFO - Player data loaded for: don minon
+2025-11-21 19:50:39,027 - INFO - User don minon logged in successfully
