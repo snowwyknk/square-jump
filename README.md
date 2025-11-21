@@ -2,7 +2,7 @@
 //Классический раннер// с ангелом хранителем в меню(Phantomcube) в будущем: система ачивок, таблица 'игроков легенд', свои собственные ивенты, фишки и многое другое;) / Classic ranner with angel in menu. in future: system achive, A table of 'legend players', their own events, chips, and more
 
 ## Технологии
-- Python 3.13.3
+- Python 3.11.9
 - Pygame 2.5
 - Visual stiduo code
 ## команда
