@@ -1,0 +1,46 @@
+{
+    "name": "Default Level",
+    "player_start_x": 150,
+    "player_start_y": 400,
+    "speed": 8,
+    "level_end_x": 3000,
+    "obstacles": [
+        {
+            "x": 500,
+            "y": 450,
+            "w": 60,
+            "h": 100,
+            "type": "spike",
+            "color": [
+                220,
+                20,
+                60
+            ]
+        },
+        {
+            "x": 800,
+            "y": 350,
+            "w": 150,
+            "h": 25,
+            "type": "platform",
+            "color": [
+                70,
+                130,
+                180
+            ]
+        }
+    ],
+    "amethysts": [
+        {
+            "x": 850,
+            "y": 300,
+            "size": 30
+        },
+        {
+            "x": 1500,
+            "y": 300,
+            "size": 30
+        }
+    ],
+    "random_generation": false
+}
